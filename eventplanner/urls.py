@@ -18,6 +18,11 @@ from django.urls import path
 from event import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name="admin_page"),
     path('home/', views.get_home, name="home_page"),
+    path('register/', views.user_register, name="register"),
+    path('login/', views.user_login, name="login"),
+    path('signout/', views.user_logout, name="logout"),
+    path('add/event/', views.add_event, name="add_event"),
+
 ]
