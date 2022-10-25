@@ -4,9 +4,6 @@ from django.contrib.auth import login, authenticate, logout
 from .models import Event
 
 # Create your views here.
-def get_home(request):
-
-    return render(request,"home-page.html")
 
 
 def user_register(req):
@@ -31,10 +28,6 @@ def user_register(req):
     }
 
     return render(req, "registration.html", context)
-
-
-
-
 
 def user_login(request):
     form = UserLogin()
@@ -72,3 +65,42 @@ def add_event(req):
     }
 
     return render(req,"add-event.html" , context)
+
+def get_events(req):
+
+    events = Event.objects.all()
+    events_list= []
+
+    for event in events:
+        events_list.append(
+            {
+                "id":event.id,
+                "title": event.title,
+                "image": event.image,
+                "number_of_seats": event.number_of_seats,
+                "date_of_event": event.date_of_event,
+                   
+            }
+        )
+
+    context = {
+        "events": events_list
+    }
+
+    return render(req, "home-page.html", context)
+
+def get_details(req, event_id):
+    event = Event.objects.get(id=event_id)
+    context = {
+        "event": {
+            "id":event.id,
+            "title": event.title,
+            "image": event.image,
+            "date_of_event": event.date_of_event,
+            
+        }
+    }
+    return render(req, "event-details.html", context)
+
+
+
