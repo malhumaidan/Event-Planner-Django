@@ -25,5 +25,6 @@ urlpatterns = [
     path('signout/', views.user_logout, name="logout"),
     path('add/event/', views.add_event, name="add_event"),
     path('event/details/<int:event_id>/', views.get_details, name="event_details"),
+    path('profile/>', views.edit_profile, name="edit-profile"),
 
 ]

@@ -52,19 +52,22 @@ def user_logout(request):
     logout(request)
     return redirect("home_page")
 
-def add_event(req):
+def add_event(request):
     form = EventForm()
-    if req.method == "POST":
-        form = EventForm(req.POST)
+    if request.method == "POST":
+        form = EventForm(request.POST)
         if form.is_valid():
-            form.save()
+            event= form.save(commit=False)
+
+            event.organizer= request.user
+            event.save()
             return redirect("home_page")
 
     context = {
         "form": form
     }
 
-    return render(req,"add-event.html" , context)
+    return render(request,"add-event.html" , context)
 
 def get_events(req):
 
@@ -79,6 +82,7 @@ def get_events(req):
                 "image": event.image,
                 "number_of_seats": event.number_of_seats,
                 "date_of_event": event.date_of_event,
+                "organizer": f"Organized by: {event.organizer}",
                    
             }
         )
@@ -100,10 +104,23 @@ def get_details(req, event_id):
             
         }
     }
-    print(dir(req))
-    print(req.user)
-    print(req.user.username)
+    # print(dir(req))
+    # print(req.user)
+    # print(req.user.username)
     return render(req, "event-details.html", context)
 
+def edit_profile(req):
+    obj = Registration.objects.all()
+    form = Registration(instance=obj)
+    if req.method == "POST":
+        form = Registration(req.POST, instance=obj)
+        if form.is_valid():
+            form.save()
+            return redirect("list-page")
+    context = {
+        "obj": obj,
+        "form": form,
+    }
+    return render(req, 'edit-profile.html', context)
 
 
