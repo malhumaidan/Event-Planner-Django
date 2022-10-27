@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
-from .forms import Registration, UserLogin, EventForm
+from .forms import BookingForm, Registration, UserLogin, EventForm
 from django.contrib.auth import login, authenticate, logout
-from .models import Event
+from .models import Booking, Event
 
 # Create your views here.
 
@@ -110,6 +110,7 @@ def get_details(req, event_id):
     return render(req, "event-details.html", context)
 
 def edit_profile(req):
+
     obj = Registration.objects.all()
     form = Registration(instance=obj)
     if req.method == "POST":
@@ -122,5 +123,28 @@ def edit_profile(req):
         "form": form,
     }
     return render(req, 'edit-profile.html', context)
+
+
+def book_seats(req, event_id):
+    event = Event.objects.get(id=event_id)
+    form = BookingForm()
+    if req.method == "POST":
+        form = BookingForm(req.POST)
+        if form.is_valid():
+            booking= form.save(commit=False)
+            booking.booker= req.user
+            print("!",booking)
+            print("!!",event)
+            booking.event= event
+            booking.save()
+            print("booking: ",booking.event)
+
+    context = {
+        "id":event_id,
+        "form": form,
+    }
+
+    return render(req, "booking.html", context)
+    
 
 

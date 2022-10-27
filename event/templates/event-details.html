@@ -1,24 +1,15 @@
-{% extends "base.html" %}
-
-{% block title %}
-  '''
-{% endblock title %}
-
+{% extends "base.html" %} {% block title %} Details {% endblock title %} 
 {% block content %}
 
-
-
-    
-    <div class="container" style="background-color: #f7f7f7; margin-top: 20px;">
-      <div>
-        <h1>{{event.title}}</h1>
-        <img src="{{event.image}}" alt="" style="height: 100px;">
-        <p>{{event.date_of_event}}</p>
-        <button type="submit" class="btn btn-success"><a href="#" style="text-decoration: none; color: white;">Book</a></button>
-      </div>
-        
-
-    </div>
-    
+<div class="container" style="background-color: #f7f7f7; margin-top: 20px; height: 63vh;">
+  <div>
+    <h1>{{event.title}}</h1>
+    <img src="{{event.image}}" alt="" style="height: 100px" />
+    <p>{{event.date_of_event}}</p>
+    <button type="submit" class="btn btn-success">
+      <a href="{% url 'booking_event' event_id=event.id %}" style="text-decoration: none; color: white">Book</a>
+    </button>
+  </div>
+</div>
 
 {% endblock content %}

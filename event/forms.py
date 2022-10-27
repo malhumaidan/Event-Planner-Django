@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django import forms
-from .models import Event
+from .models import Booking, Event
 
 User = get_user_model()
 
@@ -24,3 +24,9 @@ class EventForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = ["title", "image", "number_of_seats","date_of_event"]
+
+
+class BookingForm(forms.ModelForm):
+    class Meta:
+        model= Booking
+        fields = ["number_of_booked_seats"]

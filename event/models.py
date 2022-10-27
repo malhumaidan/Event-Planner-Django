@@ -11,18 +11,19 @@ class Event(models.Model):
    organizer= models.ForeignKey(User, on_delete=models.CASCADE, related_name="events")
    number_of_seats= models.IntegerField()
    date_of_event= models.DateField()
-   # number_of_seats=
-   # location= models.TextField()
+   location= models.TextField()
 
-   @property
-   def booked(self):
-      pass
 
    def __str__(self):
       return self.title
 
-class Bookings(models.Model):
-   booker = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bookings")
-   event= models.OneToOneField(Event, on_delete=models.CASCADE, primary_key=True)
+class Booking(models.Model):
+   booker= models.ForeignKey(User, on_delete=models.CASCADE, related_name="bookings")
+   event= models.ForeignKey(Event, on_delete=models.CASCADE, related_name="booking_event")
+   number_of_booked_seats= models.PositiveIntegerField()
+
+   def __str__(self):
+      return self.event.title
+
 
    
