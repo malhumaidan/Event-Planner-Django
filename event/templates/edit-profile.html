@@ -1,8 +1,7 @@
 {% extends "base.html" %} {% load crispy_forms_tags %} {% block title %}
 register {% endblock title %} {% block content %}
 
-<form action="{% url 'register' %}" method="POST">
-  {% csrf_token %}
+<form action="{% url 'edit-profile' %}" method="POST">
   <div class="container">{{ form|crispy }}</div>
 </form>
 

@@ -104,9 +104,7 @@ def get_details(req, event_id):
             
         }
     }
-    # print(dir(req))
-    # print(req.user)
-    # print(req.user.username)
+
     return render(req, "event-details.html", context)
 
 def edit_profile(req):
