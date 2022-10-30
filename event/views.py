@@ -83,6 +83,7 @@ def get_events(req):
                 "number_of_seats": event.number_of_seats,
                 "date_of_event": event.date_of_event,
                 "organizer": f"Organized by: {event.organizer}",
+                "remaining": f"Remaining seats: {event.remaining_seats}",
                    
             }
         )
@@ -101,7 +102,8 @@ def get_details(req, event_id):
             "title": event.title,
             "image": event.image,
             "date_of_event": event.date_of_event,
-            
+            "number_of_seats": f"Total seats: {event.number_of_seats}",
+            "remaining": f"Remaining seats: {event.remaining_seats}",
         }
     }
 
@@ -129,11 +131,8 @@ def book_seats(req, event_id):
         if form.is_valid():
             booking= form.save(commit=False)
             booking.booker= req.user
-            print("!",booking)
-            print("!!",event)
             booking.event= event
             booking.save()
-            print("booking: ",booking.event)
 
     context = {
         "id":event_id,
@@ -142,5 +141,3 @@ def book_seats(req, event_id):
 
     return render(req, "booking.html", context)
     
-
-

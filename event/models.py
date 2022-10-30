@@ -31,4 +31,4 @@ class Booking(models.Model):
    number_of_booked_seats= models.PositiveIntegerField()
 
    def __str__(self):
-      return f"{self.event.title}, by {self.booker}"
+      return None

@@ -6,6 +6,8 @@
     <h1>{{event.title}}</h1>
     <img src="{{event.image}}" alt="" style="height: 100px" />
     <p>{{event.date_of_event}}</p>
+    <p>{{event.number_of_seats}}</p>
+    <p>{{event.remaining}}</p>
     <button type="submit" class="btn btn-success">
       <a href="{% url 'booking_event' event_id=event.id %}" style="text-decoration: none; color: white">Book</a>
     </button>
