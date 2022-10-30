@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
     
 class Event(models.Model):
    title= models.CharField(max_length=150)
-   image= models.ImageField()
+   image= models.ImageField(blank=True)
    organizer= models.ForeignKey(User, on_delete=models.CASCADE, related_name="events")
    number_of_seats= models.IntegerField()
    date_of_event= models.DateField()

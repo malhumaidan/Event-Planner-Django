@@ -109,19 +109,17 @@ def get_details(req, event_id):
 
 def edit_profile(req):
 
-    obj = Registration.objects.all()
-    form = Registration(instance=obj)
+    form = Registration(instance=req.user)
     if req.method == "POST":
-        form = Registration(req.POST, instance=obj)
+        form = Registration(req.POST, instance=req.user)
         if form.is_valid():
-            form.save()
-            return redirect("list-page")
+            user= form.save()
+            login(req, user)
+            return redirect("home_page")
     context = {
-        "obj": obj,
         "form": form,
     }
     return render(req, 'edit-profile.html', context)
-
 
 def book_seats(req, event_id):
     event = Event.objects.get(id=event_id)

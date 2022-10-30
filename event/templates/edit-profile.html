@@ -2,7 +2,12 @@
 register {% endblock title %} {% block content %}
 
 <form action="{% url 'edit-profile' %}" method="POST">
-  <div class="container">{{ form|crispy }}</div>
+  <div class="container">
+    {% csrf_token %}
+    {{ form|crispy }}
+
+    <button class="btn btn-primary" type="submit">Update</button>
+  </div>
 </form>
 
 {% endblock content %}
