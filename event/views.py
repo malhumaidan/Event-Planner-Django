@@ -55,7 +55,7 @@ def user_logout(request):
 def add_event(request):
     form = EventForm()
     if request.method == "POST":
-        form = EventForm(request.POST)
+        form = EventForm(request.POST, request.FILES)
         if form.is_valid():
             event= form.save(commit=False)
 

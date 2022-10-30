@@ -9,7 +9,7 @@
 
 <div class="container pt-3" style="width: 30%; height: 61vh;">
 
-    <form action="{% url 'add_event' %}" method="POST">
+    <form action="{% url 'add_event' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|crispy }}
         <button class="btn btn-primary" type="submit" style="margin-top: 5px; ">ADD Event</button>
