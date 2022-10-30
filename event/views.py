@@ -96,6 +96,9 @@ def get_events(req):
 
 def get_details(req, event_id):
     event = Event.objects.get(id=event_id)
+
+    
+
     context = {
         "event": {
             "id":event.id,
