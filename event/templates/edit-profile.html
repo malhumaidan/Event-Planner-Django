@@ -1,13 +1,25 @@
 {% extends "base.html" %} {% load crispy_forms_tags %} {% block title %}
 register {% endblock title %} {% block content %}
 
-<form action="{% url 'edit-profile' %}" method="POST">
-  <div class="container">
-    {% csrf_token %}
-    {{ form|crispy }}
+<div class="container">
+  <form action="{% url 'edit-profile' %}" method="POST">
+    <h1>Edit profile</h1>
+    <div class="container">
+      {% csrf_token %}
+      {{ form|crispy }}
+      
+      <button class="btn btn-primary" type="submit">Update</button>
+    </div>
+  </form>
 
-    <button class="btn btn-primary" type="submit">Update</button>
+  <div class="container" style="height: 30vh;">
+    <h1>Following</h1>
+    {{x}} <br>
+    <br>
+    {% for g in y %}
+      {{g.title}}
+    {% endfor %}
   </div>
-</form>
+</div>
 
 {% endblock content %}

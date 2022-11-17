@@ -30,3 +30,8 @@ class BookingForm(forms.ModelForm):
     class Meta:
         model= Booking
         fields = ["number_of_booked_seats"]
+
+    def availability(self):
+        seats = Booking.number_of_booked_seats
+        available = Booking.event.number_of_seats
+        return seats > available

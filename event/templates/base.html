@@ -12,7 +12,7 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-light">
-      <div class="container-fluid">
+      <div class="container-fluid me-5 ms-5">
         <a class="navbar-brand" href="{% url 'home_page' %}"
           >{{request.user.username}}</a
         >
@@ -27,7 +27,7 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
               <a
@@ -54,6 +54,9 @@
             {% endif %} {% if request.user.is_staff %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'add_event' %}">ADD Event</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'dashboard' user_id=request.user.id %}">Dashboard</a>
             </li>
             {% endif %}
           </ul>

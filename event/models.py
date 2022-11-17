@@ -21,9 +21,16 @@ class Event(models.Model):
          x += obj.number_of_booked_seats
       return self.number_of_seats - x
 
+   @property
+   def event_full(self):
+      objects = self.booking_event.all()
+      reservations = 0
+      for x in objects:
+         reservations += x.number_of_booked_seats
+      return reservations
 
    def __str__(self):
-      return self.title
+      return f"{self.title}"
 
 class Booking(models.Model):
    booker= models.ForeignKey(User, on_delete=models.CASCADE, related_name="bookings")
@@ -31,4 +38,14 @@ class Booking(models.Model):
    number_of_booked_seats= models.PositiveIntegerField()
 
    def __str__(self):
-      return self.event
+      return f"{self.event.title} Booking Details"
+
+
+class Following(models.Model):
+   users = models.ManyToManyField(User, related_name="following")
+   # followers = models.ManyToManyField(User, related_name="followers")
+   title = models.CharField(max_length=100)
+   user = models.OneToOneField(User, related_name="following_user", on_delete=models.CASCADE)
+
+   def __str__(self):
+      return f"Following/Followers"

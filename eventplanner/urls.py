@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('', views.landing_page, name="empty"),
     path('admin/', admin.site.urls, name="admin_page"),
     path('home/', views.get_events, name="home_page"),
     path('register/', views.user_register, name="register"),
@@ -29,6 +30,9 @@ urlpatterns = [
     path('event/details/<int:event_id>/', views.get_details, name="event_details"),
     path('profile/', views.edit_profile, name="edit-profile"),
     path('booking/<int:event_id>/', views.book_seats, name="booking_event"),
+    path('org/<int:user_id>/', views.get_org_events, name="org_events"),
+    path('dashboard/<int:user_id>/', views.dashboard, name="dashboard"),
+    # path('booking/full/', views.full_event, name="full-page"),
 
 ]
 

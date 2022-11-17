@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+  Welcome
+{% endblock title %}
+
+{% block content %}
+    <div class="container" style="background-color: antiquewhite; height: 100vh;">
+      <div class="d-flex justify-content-center">
+          <div class="input-group" style="width: 40%;">
+            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+            <button type="button" class="btn btn-outline-primary">search</button>
+          </div>
+      </div>
+    </div>
+
+{% endblock content %}

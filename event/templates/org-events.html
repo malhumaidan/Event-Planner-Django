@@ -13,10 +13,8 @@
             Some quick example text to build on the card title and make up the
             bulk of the card's content.
           </p>
-          <p>{{event.date_of_event}}</p>
           <p>{{event.remaining}}</p>
-          <!-- <p>{{event.organizer}}</p> -->
-          <p>Organizer: <a href="{% url 'org_events'  user_id=event.organizer.id %}">{{event.organizer}}</a></p>
+          <p>{{event.organizer}}</p>
           {% if request.user.is_authenticated %}
           <a
             href="{% url 'event_details' event_id=event.id %}"

@@ -1,7 +1,10 @@
+import datetime
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from .forms import BookingForm, Registration, UserLogin, EventForm
 from django.contrib.auth import login, authenticate, logout
-from .models import Booking, Event
+from .models import Booking, Event, Following
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -71,23 +74,27 @@ def add_event(request):
 
 def get_events(req):
 
+    current_date = datetime.date.today()
+
     events = Event.objects.all()
     events_list= []
 
     for event in events:
-        events_list.append(
-            {
-                "id":event.id,
-                "title": event.title,
-                "image": event.image,
-                "number_of_seats": event.number_of_seats,
-                "date_of_event": event.date_of_event,
-                "organizer": f"Organized by: {event.organizer}",
-                "remaining": f"Remaining seats: {event.remaining_seats}",
-                   
-            }
-        )
-
+        if event.date_of_event >= current_date:
+            events_list.append(
+                {
+                    "id":event.id,
+                    "title": event.title,
+                    "image": event.image,
+                    "number_of_seats": event.number_of_seats,
+                    "date_of_event": event.date_of_event,
+                    "organizer": event.organizer,
+                    "remaining": event.remaining_seats,
+                    
+                }
+            )
+        
+            
     context = {
         "events": events_list
     }
@@ -121,8 +128,24 @@ def edit_profile(req):
             user= form.save()
             login(req, user)
             return redirect("home_page")
+
+    x = User.objects.get(id=req.user.id)
+    print(x)
+    # y = Following.objects.filter(user=req.user.id)
+    y = x.following.all()
+    print(y)
+
+    # User.objects.filter(following__title='product_name')
+
+    # follow_list = []
+    # for g in y:
+    #     follow_list.append({
+    #         "user": g.title,
+    #     })
     context = {
         "form": form,
+        "y": y,
+        "x": x,
     }
     return render(req, 'edit-profile.html', context)
 
@@ -135,7 +158,12 @@ def book_seats(req, event_id):
             booking= form.save(commit=False)
             booking.booker= req.user
             booking.event= event
+            if booking.number_of_booked_seats > event.remaining_seats:
+                return HttpResponse("exceeded")
             booking.save()
+            return redirect("home_page")
+    elif event.number_of_seats <= event.event_full:
+        return HttpResponse("event is full!!")
 
     context = {
         "id":event_id,
@@ -143,4 +171,37 @@ def book_seats(req, event_id):
     }
 
     return render(req, "booking.html", context)
+
+def landing_page(req):
+    return render(req, "landing-page.html")
     
+
+def get_org_events(req, user_id):
+    
+    user = User.objects.get(id=user_id)
+    events = user.events.all()
+    # This first finds the user then gets the events list
+    # events = User.objects.get(id=user_id).events.all()
+
+
+    context = {
+        "user_id": user_id,
+        "events": events
+    }
+
+    return render(req, "org-events.html",context)
+
+def dashboard(req, user_id):
+    user = User.objects.get(id=user_id)
+    events = user.events.all()
+
+
+    context = {
+        "user_id": user_id,
+        "events": events
+    }
+
+    return render(req, "dashboard.html",context)
+
+
+
