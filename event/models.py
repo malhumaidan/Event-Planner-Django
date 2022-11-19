@@ -48,4 +48,4 @@ class Following(models.Model):
    user = models.OneToOneField(User, related_name="following_user", on_delete=models.CASCADE)
 
    def __str__(self):
-      return f"Following/Followers"
+      return f"Following"

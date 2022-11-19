@@ -11,15 +11,7 @@ register {% endblock title %} {% block content %}
       <button class="btn btn-primary" type="submit">Update</button>
     </div>
   </form>
-
-  <div class="container" style="height: 30vh;">
-    <h1>Following</h1>
-    {{x}} <br>
-    <br>
-    {% for g in y %}
-      {{g.title}}
-    {% endfor %}
-  </div>
+  
 </div>
 
 {% endblock content %}

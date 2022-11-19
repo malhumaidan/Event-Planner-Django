@@ -72,6 +72,7 @@ def add_event(request):
 
     return render(request,"add-event.html" , context)
 
+
 def get_events(req):
 
     current_date = datetime.date.today()
@@ -129,23 +130,9 @@ def edit_profile(req):
             login(req, user)
             return redirect("home_page")
 
-    x = User.objects.get(id=req.user.id)
-    print(x)
-    # y = Following.objects.filter(user=req.user.id)
-    y = x.following.all()
-    print(y)
-
-    # User.objects.filter(following__title='product_name')
-
-    # follow_list = []
-    # for g in y:
-    #     follow_list.append({
-    #         "user": g.title,
-    #     })
+   
     context = {
         "form": form,
-        "y": y,
-        "x": x,
     }
     return render(req, 'edit-profile.html', context)
 
@@ -195,10 +182,38 @@ def dashboard(req, user_id):
     user = User.objects.get(id=user_id)
     events = user.events.all()
 
+    form = EventForm()
+    if req.method == "POST":
+        form = EventForm(req.POST, req.FILES)
+        if form.is_valid():
+            event= form.save(commit=False)
+
+            event.organizer= req.user
+            event.save()
+
+
+    x = User.objects.get(id=req.user.id)
+    print(x)
+    # y = Following.objects.filter(user=req.user.id)
+    y = x.following.all()
+    print(y)
+
+
+    # User.objects.filter(following__title='product_name')
+
+    # follow_list = []
+    # for g in y:
+    #     follow_list.append({
+    #         "user": g.title,
+    #     })
+
 
     context = {
         "user_id": user_id,
-        "events": events
+        "events": events,
+        "form": form,
+        "y": y,
+        "x": x,
     }
 
     return render(req, "dashboard.html",context)
