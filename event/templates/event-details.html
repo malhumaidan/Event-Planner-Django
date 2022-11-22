@@ -11,11 +11,10 @@
     <button type="submit" class="btn btn-success">
       <a href="{% url 'booking_event' event_id=event.id %}" style="text-decoration: none; color: white">Book</a>
     </button>
-    {% if event.event_full == 0 %}
-    <button type="submit" class="btn btn-info deactivate">
+
+    <!-- <button type="submit" class="btn btn-info deactivate">
       <a href="{% url 'booking_event' event_id=event.id %}" style="text-decoration: none; color: white">Full</a>
-    </button>
-    {% endif %}
+    </button> -->
   </div>
 </div>
 

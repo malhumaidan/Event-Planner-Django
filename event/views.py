@@ -120,7 +120,9 @@ def get_details(req, event_id):
 
     return render(req, "event-details.html", context)
 
-def edit_profile(req):
+def edit_profile(req, user_id):
+    user = User.objects.get(id=user_id)
+    events = user.events.all()
 
     form = Registration(instance=req.user)
     if req.method == "POST":
@@ -132,6 +134,8 @@ def edit_profile(req):
 
    
     context = {
+        "user_id": user_id,
+        "events": events,
         "form": form,
     }
     return render(req, 'edit-profile.html', context)
@@ -190,6 +194,7 @@ def dashboard(req, user_id):
 
             event.organizer= req.user
             event.save()
+            redirect("dashboard")
 
 
     x = User.objects.get(id=req.user.id)

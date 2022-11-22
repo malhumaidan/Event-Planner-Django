@@ -1,17 +1,46 @@
 {% extends "base.html" %} {% load crispy_forms_tags %} {% block title %}
 register {% endblock title %} {% block content %}
+<div class="container d-flex pt-5">
 
-<div class="container">
-  <form action="{% url 'edit-profile' %}" method="POST">
-    <h1>Edit profile</h1>
-    <div class="container">
-      {% csrf_token %}
-      {{ form|crispy }}
-      
-      <button class="btn btn-primary" type="submit">Update</button>
+  <div class="container me-5" style="background-color: #f7f7f7;">
+    <form action="{% url 'edit-profile' user_id=request.user.id %}" method="POST">
+      <h1>Edit profile</h1>
+      <div class="container">
+        {% csrf_token %}
+        {{ form|crispy }}
+        
+        <button class="btn btn-primary" type="submit">Update</button>
+      </div>
+    </form>
+    
+  </div>
+  {% if request.user.is_staff %}
+  <div class="container me-5" style="background-color: #f7f7f7; overflow: scroll; height: 50vh;">
+    <h1>My events list</h1>
+    {% for event in events %}
+    <div class="container mb-5 pb-3" style="background-color: #fff;">
+      {{event.id}}
+      <!-- <img class="" src="{{event.image.url}}" alt="Card image cap" style="height: 30px; width: 60px;"/> -->
+      <h5 class="">{{event.title}}</h5>
+      <p class="">
+        Some quick example text to build on the card title and make up the
+        bulk of the card's content.
+      </p>
+      <p>{{event.remaining}}</p>
+      <p>{{event.organizer}}</p>
+      {% if request.user.is_authenticated %}
+      <a
+      href="{% url 'event_details' event_id=event.id %}"
+      class="btn btn-primary"
+      >Details</a
+      >
+      {% endif %}
     </div>
-  </form>
+    {% endfor %}
+  </div>
+  {% endif %}
+
   
 </div>
-
-{% endblock content %}
+  {% endblock content %}
+  
