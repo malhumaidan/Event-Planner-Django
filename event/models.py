@@ -41,11 +41,9 @@ class Booking(models.Model):
       return f"{self.event.title} Booking Details"
 
 
-class Following(models.Model):
-   users = models.ManyToManyField(User, related_name="following")
-   # followers = models.ManyToManyField(User, related_name="followers")
-   title = models.CharField(max_length=100)
-   user = models.OneToOneField(User, related_name="following_user", on_delete=models.CASCADE)
+class Relation(models.Model):
+   following = models.ForeignKey(User, related_name="following", on_delete=models.CASCADE)
+   follower = models.ForeignKey(User, related_name="follower", on_delete=models.CASCADE)
 
    def __str__(self):
-      return f"Following"
+      return f"user: {self.following} / followed by: {self.follower}"

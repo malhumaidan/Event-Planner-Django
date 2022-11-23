@@ -3,30 +3,41 @@
 
 <div class="container pt-4">
   <div class="row">
-    {% for event in events %}
-    <div class="col-3 mb-3">
-      <div class="card" style="width: 18rem">
-        <img class="card-img-top" src="{{event.image.url}}" alt="Card image cap" />
-        <div class="card-body">
-          <h5 class="card-title">{{event.title}}</h5>
-          <p class="card-text">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </p>
-          <p>{{event.remaining}}</p>
-          <p>{{event.organizer}}</p>
-          {% if request.user.is_authenticated %}
-          <a
-            href="{% url 'event_details' event_id=event.id %}"
-            class="btn btn-primary"
-            >Details</a
-          >
-          {% endif %}
+    <h1>User Profile</h1>
+    {{user.username}} <br>
+    {{user.first_name}}<br>
+    {{user.last_name}}<br>
+    {{user.email}}<br>
+    <a href="{% url 'follow'  user_id=user.id %}">follow</a>  
+  </div>
+  {% if user.is_staff %}
+    <div class="row">
+      <h1>Events list</h1>
+      {% for event in events %}
+      <div class="col-3 mb-3">
+        <div class="card" style="width: 18rem">
+          <img class="card-img-top" src="{{event.image.url}}" alt="Card image cap" />
+          <div class="card-body">
+            <h5 class="card-title">{{event.title}}</h5>
+            <p class="card-text">
+              Some quick example text to build on the card title and make up the
+              bulk of the card's content.
+            </p>
+            <p>{{event.remaining}}</p>
+            <p>{{event.organizer}}</p>
+            {% if request.user.is_authenticated %}
+            <a
+              href="{% url 'event_details' event_id=event.id %}"
+              class="btn btn-primary"
+              >Details</a
+            >
+            {% endif %}
+          </div>
         </div>
       </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-  </div>
+  {% endif %}
 </div>
 
 {% endblock content %}

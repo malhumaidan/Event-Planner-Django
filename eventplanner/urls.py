@@ -31,7 +31,9 @@ urlpatterns = [
     path('profile/<int:user_id>/', views.edit_profile, name="edit-profile"),
     path('booking/<int:event_id>/', views.book_seats, name="booking_event"),
     path('org/<int:user_id>/', views.get_org_events, name="org_events"),
+    path('follow/<int:user_id>/', views.follow, name="follow"),
     path('dashboard/<int:user_id>/', views.dashboard, name="dashboard"),
+    path('results/', views.search, name="search"),
     # path('booking/full/', views.full_event, name="full-page"),
 
 ]

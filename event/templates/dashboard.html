@@ -8,10 +8,9 @@
 {% block content %}
 
 <div class="container d-flex pt-4">
-  <div class="container ">
 
     
-    <div class="container" style="background-color: #f7f7f7; height: 50vh;">
+    <div class="container mx-2" style="background-color: #f7f7f7; height: 50vh;">
       <h1>Add event</h1>
       <form action="{% url 'add_event' %}" method="POST" enctype="multipart/form-data">
           {% csrf_token %}
@@ -19,16 +18,32 @@
           <button class="btn btn-primary" type="submit" style="margin-top: 5px; ">ADD Event</button>
       </form>
     </div>
-  </div>
-  <div class="container" style="height: 50vh; background-color: #f7f7f7;">
-    <h1>Following</h1>
-    {{x}} <br>
-    {{y}}<br>
-    {% for obj in y %}
-      {{obj.title}}
-    {% endfor %}
-    
-  </div>
+
+    <div class="container mx-2" style="background-color: #f7f7f7;">
+      <h1>Following</h1>
+      <div class="container" style="height: 130px; background-color: #fff; overflow: scroll;">
+        {% for obj in following %}
+        <div class="container py-1 my-1" style="background-color: #f7f7f7;">
+          <a href="{% url 'org_events'  user_id=obj.following.id %}">{{obj.following}}</a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="container mx-2" style="background-color: #f7f7f7;">
+      <h1>Followers</h1>
+      <div class="container" style="height: 130px; background-color: #fff; overflow: scroll;">
+        {% for obj in followers %}
+        <div class="container py-1 my-1" style="background-color: #f7f7f7;">
+          <a href="{% url 'org_events'  user_id=obj.follower.id %}">{{obj.follower}}</a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  
+  
+
 </div>
 
 {% endblock content %}

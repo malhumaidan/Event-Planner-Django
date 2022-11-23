@@ -3,8 +3,9 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from .forms import BookingForm, Registration, UserLogin, EventForm
 from django.contrib.auth import login, authenticate, logout
-from .models import Booking, Event, Following
+from .models import Booking, Event, Relation
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 # Create your views here.
 
@@ -164,7 +165,19 @@ def book_seats(req, event_id):
     return render(req, "booking.html", context)
 
 def landing_page(req):
-    return render(req, "landing-page.html")
+    search_event = req.GET.get('search')
+    if search_event:
+        events = Event.objects.filter(organizer = search_event)
+    else:
+    # If not searched, return default posts
+        events = Event.objects.all()
+
+    context = {
+        "events": events
+    }
+
+
+    return render(req, "landing-page.html", context)
     
 
 def get_org_events(req, user_id):
@@ -174,13 +187,29 @@ def get_org_events(req, user_id):
     # This first finds the user then gets the events list
     # events = User.objects.get(id=user_id).events.all()
 
+    # def follow(req):
+    #     Relation.objects.create(following=req.user, followers=user)
+
 
     context = {
         "user_id": user_id,
-        "events": events
+        "events": events,
+        "user": user,
+        # "follow": follow
     }
 
     return render(req, "org-events.html",context)
+
+def follow(req, user_id):
+    user = User.objects.get(id=user_id)
+    Relation.objects.create(following=user, follower=req.user)
+
+    context = {
+        "user" : user,
+    }
+    return (req, context)
+
+
 
 def dashboard(req, user_id):
     user = User.objects.get(id=user_id)
@@ -197,31 +226,25 @@ def dashboard(req, user_id):
             redirect("dashboard")
 
 
-    x = User.objects.get(id=req.user.id)
-    print(x)
-    # y = Following.objects.filter(user=req.user.id)
-    y = x.following.all()
-    print(y)
-
-
-    # User.objects.filter(following__title='product_name')
-
-    # follow_list = []
-    # for g in y:
-    #     follow_list.append({
-    #         "user": g.title,
-    #     })
-
+    following_list = Relation.objects.filter(follower=req.user)
+    followers_list = Relation.objects.filter(following=req.user)
 
     context = {
         "user_id": user_id,
         "events": events,
         "form": form,
-        "y": y,
-        "x": x,
+        "following": following_list,
+        "followers": followers_list,
     }
 
     return render(req, "dashboard.html",context)
 
 
+def search(req):
+    events = Event.objects.all()
+
+    context = {
+        "events": events
+    }
+    return render(req, "search.html", context)
 
