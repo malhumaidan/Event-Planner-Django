@@ -198,7 +198,7 @@ def get_org_events(req, user_id):
 
 def follow(req, user_id):
     user = User.objects.get(id=user_id)
-    is_there = Relation.objects.filter(following=user, follower=req.user)
+    is_there = Relation.objects.get_or_create(following=user, follower=req.user)
     # follow_relation = Relation.objects.get(following=user, follower=req.user)
     
     if not is_there:
