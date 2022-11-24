@@ -5,7 +5,6 @@ from .forms import BookingForm, Registration, UserLogin, EventForm
 from django.contrib.auth import login, authenticate, logout
 from .models import Booking, Event, Relation
 from django.contrib.auth.models import User
-from django.db.models import Q
 
 # Create your views here.
 
@@ -187,27 +186,30 @@ def get_org_events(req, user_id):
     # This first finds the user then gets the events list
     # events = User.objects.get(id=user_id).events.all()
 
-    # def follow(req):
-    #     Relation.objects.create(following=req.user, followers=user)
 
 
     context = {
         "user_id": user_id,
         "events": events,
         "user": user,
-        # "follow": follow
     }
 
     return render(req, "org-events.html",context)
 
 def follow(req, user_id):
     user = User.objects.get(id=user_id)
-    Relation.objects.create(following=user, follower=req.user)
+    is_there = Relation.objects.filter(following=user, follower=req.user)
+    # follow_relation = Relation.objects.get(following=user, follower=req.user)
+    
+    if not is_there:
+        return Relation.objects.create(following=user, follower=req.user)
+    
+  
 
     context = {
         "user" : user,
     }
-    return (req, context)
+    return render(req, "org-events.html" ,context)
 
 
 
