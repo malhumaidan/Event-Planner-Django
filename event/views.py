@@ -194,22 +194,28 @@ def get_org_events(req, user_id):
         "user": user,
     }
 
-    return render(req, "org-events.html",context)
+    return render(req, "profiles.html",context)
 
 def follow(req, user_id):
     user = User.objects.get(id=user_id)
+    events = user.events.all()
     is_there = Relation.objects.get_or_create(following=user, follower=req.user)
     # follow_relation = Relation.objects.get(following=user, follower=req.user)
+    flag = False
     
     if not is_there:
+        flag = True
         return Relation.objects.create(following=user, follower=req.user)
     
   
 
     context = {
+        "user_id": user_id,
+        "events": events,
         "user" : user,
+        "flag" : flag
     }
-    return render(req, "org-events.html" ,context)
+    return render(req, "profiles.html" ,context)
 
 
 

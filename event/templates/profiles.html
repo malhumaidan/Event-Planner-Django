@@ -8,7 +8,9 @@
     {{user.first_name}}<br>
     {{user.last_name}}<br>
     {{user.email}}<br>
+    {% if not flag %}
     <a href="{% url 'follow'  user_id=user.id %}">follow</a>
+    {% endif %}
   </div>
   {% if user.is_staff %}
     <div class="row">
