@@ -199,23 +199,23 @@ def get_org_events(req, user_id):
 def follow(req, user_id):
     user = User.objects.get(id=user_id)
     events = user.events.all()
-    is_there = Relation.objects.get_or_create(following=user, follower=req.user)
-    # follow_relation = Relation.objects.get(following=user, follower=req.user)
-    flag = False
+    is_there , created = Relation.objects.get_or_create(following=user, follower=req.user)
+
     
-    if not is_there:
-        flag = True
-        return Relation.objects.create(following=user, follower=req.user)
+    try:
+        is_there , created = Relation.objects.get_or_create(following=user, follower=req.user)
+    except is_there.DoesNotExist:
+        Relation.objects.get_or_create(following=user, follower=req.user)
+
     
-  
 
     context = {
         "user_id": user_id,
         "events": events,
         "user" : user,
-        "flag" : flag
     }
     return render(req, "profiles.html" ,context)
+
 
 
 
